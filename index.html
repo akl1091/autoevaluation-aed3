@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autoévaluation AED</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{--bg:#f7f6f2;--surface:#fff;--surface2:#f0ede6;--border:#e2ddd5;--text:#1a1815;--text2:#6b6560;--text3:#9c968f;--accent:#2d5a8e;--accent2:#e8f0fa;--lv1:#c0392b;--lv1b:#fdf0ef;--lv2:#c97d00;--lv2b:#fdf6e3;--lv3:#1e7e50;--lv3b:#edf7f2;--lv4:#2d5a8e;--lv4b:#edf2fa;--r:10px;--rl:16px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;}
+.app{max-width:820px;margin:0 auto;padding:1.5rem 1rem 4rem;}
+.header{text-align:center;padding:2rem 1rem 1.5rem;}
+.htag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);background:var(--accent2);padding:4px 12px;border-radius:20px;margin-bottom:.75rem;}
+.header h1{font-family:'DM Serif Display',serif;font-size:1.9rem;font-weight:400;margin-bottom:.4rem;}
+.header p{color:var(--text2);font-size:13.5px;max-width:460px;margin:0 auto;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:1.25rem;}
+.card h2{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:.875rem;}
+.igrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+input[type=text],input[type=password],input[type=email]{width:100%;padding:8px 12px;font-size:14px;font-family:inherit;border:1px solid var(--border);border-radius:var(--r);background:var(--bg);color:var(--text);outline:none;transition:border .15s;}
+input:focus{border-color:var(--accent);}
+input::placeholder{color:var(--text3);}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.25rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:.875rem 1.25rem;}
+.ltitle{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);width:100%;margin-bottom:.4rem;}
+.li{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--text2);}
+.ldot{width:9px;height:9px;border-radius:50%;}
+.sec{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);margin-bottom:1rem;overflow:hidden;}
+.sech{display:flex;align-items:center;gap:10px;padding:.875rem 1.25rem;border-bottom:1px solid var(--border);}
+.secn{width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sech h3{font-size:14.5px;font-weight:500;}
+.crit{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:.75rem 1.25rem;border-bottom:1px solid var(--border);}
+.crit:last-child{border-bottom:none;}
+.crit:nth-child(even){background:var(--surface2);}
+.clabel{font-size:13px;line-height:1.4;}
+.rg{display:flex;gap:4px;}
+.rb input{display:none;}
+.rb label{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:7px;border:1.5px solid var(--border);cursor:pointer;font-size:11.5px;font-weight:500;color:var(--text3);transition:all .15s;user-select:none;}
+.rb label:hover{border-color:var(--accent);color:var(--accent);}
+.rb.lv1 input:checked+label{background:var(--lv1);border-color:var(--lv1);color:#fff;}
+.rb.lv2 input:checked+label{background:var(--lv2);border-color:var(--lv2);color:#fff;}
+.rb.lv3 input:checked+label{background:var(--lv3);border-color:var(--lv3);color:#fff;}
+.rb.lv4 input:checked+label{background:var(--lv4);border-color:var(--lv4);color:#fff;}
+.nbox{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:.75rem;}
+.nbox label{display:block;padding:.75rem 1.25rem .4rem;font-size:13px;font-weight:500;color:var(--text2);}
+.nbox textarea{width:100%;padding:.4rem 1.25rem .875rem;font-size:13px;font-family:inherit;border:none;outline:none;background:transparent;color:var(--text);resize:vertical;min-height:70px;line-height:1.6;}
+.tabs{display:flex;gap:2px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rl);padding:4px;margin-bottom:1.25rem;}
+.tab{flex:1;padding:8px 6px;border-radius:8px;border:none;font-size:12px;font-family:inherit;font-weight:500;cursor:pointer;background:transparent;color:var(--text3);transition:all .15s;text-align:center;}
+.tab.active{background:var(--surface);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.08);}
+.pane{display:none;}.pane.active{display:block;}
+.brow{display:flex;gap:8px;flex-wrap:wrap;margin-top:1.25rem;}
+.btn{padding:9px 18px;border-radius:var(--r);font-size:13.5px;font-family:inherit;font-weight:500;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--text);transition:all .15s;}
+.btn:hover{background:var(--surface2);}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+.btn-p{background:var(--accent);border-color:var(--accent);color:#fff;}.btn-p:hover{background:#1e4a7a;}
+.btn-s{background:#1e7e50;border-color:#1e7e50;color:#fff;}.btn-s:hover{background:#155c3a;}
+.btn-d{border-color:#f0c0c0;color:var(--lv1);}.btn-d:hover{background:#fdf0ef;}
+.alert{padding:.875rem 1.25rem;border-radius:var(--r);font-size:13px;line-height:1.5;margin-bottom:1rem;}
+.ai{background:var(--accent2);color:var(--accent);border:1px solid #c5d8f0;}
+.aw{background:#fffbe6;color:#7a5900;border:1px solid #f0d060;}
+.as{background:#edf7f2;color:#1e7e50;border:1px solid #a8dfc4;}
+.ae{background:#fdf0ef;color:var(--lv1);border:1px solid #f0c0c0;}
+/* ADMIN */
+.sc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.25rem;}
+.sc{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:.875rem;text-align:center;}
+.sc.global{border-color:var(--accent);background:var(--accent2);}
+.scn{font-family:'DM Serif Display',serif;font-size:1.8rem;color:var(--text);}
+.sc.global .scn{color:var(--accent);}
+.scl{font-size:10.5px;color:var(--text3);margin-top:1px;line-height:1.3;}
+.sbar{height:3px;background:var(--border);border-radius:2px;margin-top:6px;overflow:hidden;}
+.sbf{height:100%;border-radius:2px;transition:width .4s;}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;}
+.cbox{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem;}
+.cbox h4{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:.875rem;text-align:center;}
+.aed-list{display:grid;gap:.75rem;}
+.aed-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:1rem 1.25rem;cursor:pointer;transition:border-color .15s;}
+.aed-card:hover{border-color:var(--accent);}
+.aed-name{font-size:14px;font-weight:500;color:var(--text);}
+.aed-date{font-size:12px;color:var(--text3);}
+.aed-scores{display:flex;gap:6px;margin-top:.5rem;flex-wrap:wrap;}
+.pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;}
+.p1{background:var(--lv1b);color:var(--lv1);}
+.p2{background:var(--lv2b);color:var(--lv2);}
+.p3{background:var(--lv3b);color:var(--lv3);}
+.p4{background:var(--lv4b);color:var(--lv4);}
+.p0{background:var(--surface2);color:var(--text3);}
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:center;justify-content:center;}
+.modal-ov.open{display:flex;}
+.modal{background:var(--surface);border-radius:var(--rl);padding:1.75rem;width:90%;max-width:400px;border:1px solid var(--border);}
+.modal h2{font-family:'DM Serif Display',serif;font-size:1.2rem;font-weight:400;margin-bottom:1rem;}
+.modal label{display:block;font-size:12.5px;font-weight:500;color:var(--text2);margin-bottom:4px;margin-top:.875rem;}
+.modal label:first-of-type{margin-top:0;}
+.mfoot{display:flex;gap:8px;margin-top:1.25rem;justify-content:flex-end;}
+.admin-lnk{font-size:11.5px;color:var(--text3);text-decoration:none;display:block;text-align:center;margin-top:1.75rem;opacity:.45;}
+.admin-lnk:hover{opacity:1;}
+.setup-box{background:var(--surface);border:2px dashed var(--border);border-radius:var(--rl);padding:2rem;text-align:center;margin-bottom:1.5rem;}
+.setup-box h3{font-size:15px;font-weight:500;margin-bottom:.5rem;}
+.setup-box p{font-size:13px;color:var(--text2);margin-bottom:1rem;line-height:1.5;}
+.setup-box input{max-width:500px;margin:0 auto .75rem;display:block;}
+@media(max-width:560px){.igrid,.sc-grid,.cgrid{grid-template-columns:1fr 1fr;}.header h1{font-size:1.5rem;}.rb label{width:29px;height:29px;font-size:11px;}.rg{gap:3px;}}
+</style>
+</head>
+<body>
+<div class="app" id="app-aed">
+  <div class="header">
+    <div class="htag">Entretien professionnel AED</div>
+    <h1>Grille d'autoévaluation</h1>
+    <p>Remplissez ce formulaire pour préparer votre entretien. Vos réponses sont transmises à votre responsable.</p>
+  </div>
+
+  <!-- CONFIG MANQUANTE -->
+  <div id="setup-needed" class="setup-box" style="display:none;">
+    <h3>Configuration requise</h3>
+    <p>Collez l'URL de votre Google Apps Script pour activer l'envoi des données.</p>
+    <input type="text" id="setup-url" placeholder="https://script.google.com/macros/s/...">
+    <div class="brow" style="justify-content:center;">
+      <button class="btn btn-p" onclick="saveScriptUrl()">Enregistrer</button>
+    </div>
+  </div>
+
+  <div id="form-area">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('eval')">Évaluation</button>
+      <button class="tab" onclick="switchTab('bilan')">Mon bilan</button>
+      <button class="tab" onclick="switchTab('notes')">Notes</button>
+    </div>
+
+    <!-- ÉVAL -->
+    <div id="pane-eval" class="pane active">
+      <div class="card"><h2>Informations</h2><div class="igrid"><input type="text" id="i-nom" placeholder="Nom" oninput="autosave()"><input type="text" id="i-prenom" placeholder="Prénom" oninput="autosave()"></div></div>
+      <div class="legend"><div class="ltitle">Échelle</div><div class="li"><div class="ldot" style="background:var(--lv1)"></div>1 — À acquérir</div><div class="li"><div class="ldot" style="background:var(--lv2)"></div>2 — À développer</div><div class="li"><div class="ldot" style="background:var(--lv3)"></div>3 — Maîtrise</div><div class="li"><div class="ldot" style="background:var(--lv4)"></div>4 — Expert(e)</div></div>
+      <div id="secs"></div>
+      <div class="brow">
+        <button class="btn btn-p" onclick="switchTab('notes')">Notes →</button>
+        <button class="btn btn-s" id="btn-send" onclick="submitForm()">Envoyer mon autoévaluation</button>
+      </div>
+      <div id="send-msg" style="margin-top:.75rem;"></div>
+    </div>
+
+    <!-- BILAN -->
+    <div id="pane-bilan" class="pane">
+      <div class="sc-grid" id="my-scores"></div>
+      <div class="cgrid">
+        <div class="cbox"><h4>Par axe</h4><div style="position:relative;height:220px;"><canvas id="myRadar"></canvas></div></div>
+        <div class="cbox"><h4>Distribution</h4><div style="position:relative;height:220px;"><canvas id="myDist"></canvas></div></div>
+      </div>
+      <div class="brow"><button class="btn btn-s" onclick="submitForm()">Envoyer mon autoévaluation</button></div>
+      <div id="send-msg2" style="margin-top:.75rem;"></div>
+    </div>
+
+    <!-- NOTES -->
+    <div id="pane-notes" class="pane">
+      <div id="notes-cont"></div>
+      <div class="brow">
+        <button class="btn btn-p" onclick="switchTab('bilan');renderMyCharts()">Voir mon bilan →</button>
+        <button class="btn btn-s" onclick="submitForm()">Envoyer mon autoévaluation</button>
+      </div>
+      <div id="send-msg3" style="margin-top:.75rem;"></div>
+    </div>
+  </div>
+  <a href="#" class="admin-lnk" onclick="openAdmin();return false;">⚙ Espace directeur</a>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div class="modal-ov" id="modal-login">
+  <div class="modal">
+    <h2>Espace directeur</h2>
+    <label>Mot de passe</label>
+    <input type="password" id="apwd" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')checkPwd()">
+    <div id="pwd-err" style="color:var(--lv1);font-size:12.5px;margin-top:6px;display:none;">Mot de passe incorrect.</div>
+    <div class="mfoot"><button class="btn" onclick="closeModal('modal-login')">Annuler</button><button class="btn btn-p" onclick="checkPwd()">Accéder</button></div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="modal-ov" id="modal-admin" style="align-items:flex-start;overflow-y:auto;">
+  <div style="background:var(--surface);border-radius:var(--rl);padding:1.75rem;width:96%;max-width:900px;margin:2rem auto;border:1px solid var(--border);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;">
+      <h2 style="font-family:'DM Serif Display',serif;font-size:1.4rem;font-weight:400;">Tableau de bord — Directeur</h2>
+      <button class="btn" onclick="closeModal('modal-admin')">Fermer</button>
+    </div>
+
+    <!-- CONFIG URL -->
+    <div id="admin-setup" class="card" style="display:none;">
+      <h2>Configuration</h2>
+      <label style="font-size:13px;color:var(--text2);display:block;margin-bottom:6px;">URL Google Apps Script</label>
+      <div style="display:flex;gap:8px;">
+        <input type="text" id="admin-url-input" placeholder="https://script.google.com/macros/s/..." style="flex:1;">
+        <button class="btn btn-p" onclick="saveUrlFromAdmin()">Enregistrer</button>
+      </div>
+    </div>
+
+    <!-- STATS GLOBALES -->
+    <div id="admin-global" style="display:none;">
+      <div class="sc-grid" id="admin-scores"></div>
+      <div class="cgrid">
+        <div class="cbox"><h4>Moyenne par axe (tous AED)</h4><div style="position:relative;height:220px;"><canvas id="adminRadar"></canvas></div></div>
+        <div class="cbox"><h4>Distribution globale</h4><div style="position:relative;height:220px;"><canvas id="adminDist"></canvas></div></div>
+      </div>
+    </div>
+
+    <!-- LISTE AED -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.875rem;">
+      <h3 style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);">Réponses des AED</h3>
+      <button class="btn" style="font-size:12px;padding:6px 14px;" onclick="loadAdminData()">Actualiser</button>
+    </div>
+    <div id="admin-list"><div class="alert ai">Chargement…</div></div>
+
+    <!-- PARAMÈTRES -->
+    <div style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--border);">
+      <h3 style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:.875rem;">Paramètres</h3>
+      <div class="igrid" style="max-width:480px;">
+        <div><label style="font-size:12.5px;color:var(--text2);display:block;margin-bottom:4px;">Nouveau mot de passe</label><input type="password" id="admin-newpwd" placeholder="Laisser vide = inchangé"></div>
+        <div><label style="font-size:12.5px;color:var(--text2);display:block;margin-bottom:4px;">Confirmer</label><input type="password" id="admin-newpwd2" placeholder="Confirmer"></div>
+      </div>
+      <div style="margin-top:.75rem;"><label style="font-size:12.5px;color:var(--text2);display:block;margin-bottom:4px;">URL Google Apps Script</label><input type="text" id="admin-url2" placeholder="https://script.google.com/macros/s/..." style="max-width:480px;"></div>
+      <div class="brow"><button class="btn btn-p" onclick="saveAdminParams()">Enregistrer les paramètres</button></div>
+      <div id="params-msg" style="font-size:12.5px;margin-top:.5rem;display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SECTIONS=[
+  {id:'s1',num:'1',title:'Compétences professionnelles et technicité',criteria:['Maîtrise des fonctions exercées (surveillance, aide, accompagnement)','Connaissance de l\'environnement professionnel','Capacité d\'observation et d\'anticipation','Qualités d\'expression écrite','Qualités d\'expression orale','Maîtrise des outils numériques']},
+  {id:'s2',num:'2',title:'Contribution à l\'activité du service',criteria:['Partage de l\'information et compte rendu','Respect de la confidentialité (élèves)','Dynamisme et réactivité','Sens des responsabilités','Capacité de travail et investissement dans les projets','Sens du service public et conscience professionnelle','Respect de l\'organisation collective du travail','Rigueur, efficacité et respect des délais','Respect des règles d\'hygiène et de sécurité']},
+  {id:'s3',num:'3',title:'Capacités professionnelles et relationnelles',criteria:['Autonomie, discernement et sens des initiatives','Capacité d\'adaptation','Capacité à travailler en équipe','Relation éducative avec les élèves','Aptitudes relationnelles et maîtrise de soi']}
+];
+const LVL=['À acquérir','À développer','Maîtrise','Expert(e)'];
+const LCOLORS=['#c0392b','#c97d00','#1e7e50','#2d5a8e'];
+const SSHORT=['Compétences prof.','Contribution service','Capacités rel.'];
+const NOTES=[{id:'n-forts',label:'Mes points forts identifiés',ph:'Ce que je maîtrise bien…'},{id:'n-prog',label:'Points à améliorer / axes de progrès',ph:'Ce que je souhaite développer…'},{id:'n-evts',label:'Événements marquants de la période',ph:'Difficultés, réussites, changements…'},{id:'n-forma',label:'Formations souhaitées',ph:'Formations ou ressources souhaitées…'},{id:'n-evol',label:'Perspectives d\'évolution',ph:'Souhaits, questions à poser…'}];
+const DEFAULT_PWD='directeur2024';
+let mycharts={},admincharts={};
+
+function getCfg(){try{return JSON.parse(localStorage.getItem('aed_cfg'))||{pwd:DEFAULT_PWD,url:'https://script.google.com/macros/s/AKfycbzu9PLx4s4EWHqobDw9o4tBMUK5TCKgkubOwOw0cA8WdEV3fVbupk5GXzozs_eKJ4hT/exec'};}catch(e){return{pwd:DEFAULT_PWD,url:'https://script.google.com/macros/s/AKfycbzu9PLx4s4EWHqobDw9o4tBMUK5TCKgkubOwOw0cA8WdEV3fVbupk5GXzozs_eKJ4hT/exec'};}}
+function saveCfg(c){localStorage.setItem('aed_cfg',JSON.stringify(c));}
+function getLocal(){try{return JSON.parse(localStorage.getItem('aed_form'))||{};}catch(e){return{};}}
+function saveLocal(s){localStorage.setItem('aed_form',JSON.stringify(s));}
+
+function autosave(){
+  const s=getLocal();
+  s.nom=document.getElementById('i-nom').value;
+  s.prenom=document.getElementById('i-prenom').value;
+  s.scores={};s.notes={};
+  SECTIONS.forEach(sec=>sec.criteria.forEach((_,i)=>{const el=document.querySelector('input[name="'+sec.id+'_'+i+'"]:checked');if(el)s.scores[sec.id+'_'+i]=parseInt(el.value);}));
+  NOTES.forEach(n=>{const el=document.getElementById(n.id);if(el)s.notes[n.id]=el.value;});
+  saveLocal(s);
+}
+
+function buildForm(){
+  const s=getLocal();
+  if(s.nom)document.getElementById('i-nom').value=s.nom;
+  if(s.prenom)document.getElementById('i-prenom').value=s.prenom;
+  const cont=document.getElementById('secs');
+  SECTIONS.forEach(sec=>{
+    const div=document.createElement('div');div.className='sec';
+    let h='<div class="sech"><div class="secn">'+sec.num+'</div><h3>'+sec.title+'</h3></div>';
+    sec.criteria.forEach((c,i)=>{
+      h+='<div class="crit"><div class="clabel">'+c+'</div><div class="rg">';
+      for(let v=1;v<=4;v++)h+='<div class="rb lv'+v+'"><input type="radio" name="'+sec.id+'_'+i+'" id="'+sec.id+'_'+i+'_'+v+'" value="'+v+'" onchange="autosave()"><label for="'+sec.id+'_'+i+'_'+v+'" title="'+LVL[v-1]+'">'+v+'</label></div>';
+      h+='</div></div>';
+    });
+    div.innerHTML=h;cont.appendChild(div);
+  });
+  if(s.scores)Object.entries(s.scores).forEach(([k,v])=>{const el=document.getElementById(k+'_'+v);if(el)el.checked=true;});
+  const nc=document.getElementById('notes-cont');
+  NOTES.forEach(n=>{const d=document.createElement('div');d.className='nbox';d.innerHTML='<label>'+n.label+'</label><textarea id="'+n.id+'" placeholder="'+n.ph+'" oninput="autosave()"></textarea>';nc.appendChild(d);});
+  if(s.notes)Object.entries(s.notes).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.value=val;});
+  // Check URL config
+  const cfg=getCfg();
+  
+  // Préremplir admin
+  document.getElementById('admin-url2').value=cfg.url||'';
+}
+
+function saveScriptUrl(){
+  const url=document.getElementById('setup-url').value.trim();
+  if(!url){alert('Collez l\'URL du script.');return;}
+  const cfg=getCfg();cfg.url=url;saveCfg(cfg);
+  document.getElementById('setup-needed').style.display='none';
+  showMsg('send-msg','as','URL enregistrée ! Vous pouvez maintenant envoyer vos réponses.',3000);
+}
+
+function getScores(){
+  const out={};
+  SECTIONS.forEach(sec=>{out[sec.id]=sec.criteria.map((_,i)=>{const el=document.querySelector('input[name="'+sec.id+'_'+i+'"]:checked');return el?parseInt(el.value):0;});});
+  return out;
+}
+function avg(arr){const f=arr.filter(x=>x>0);return f.length?f.reduce((a,b)=>a+b,0)/f.length:0;}
+function lvlC(v){return v===0?'#ccc':LCOLORS[Math.round(v)-1]||'#ccc';}
+function lvlL(v){return v===0?'—':LVL[Math.round(v)-1];}
+
+function renderMyCharts(){
+  const s=getScores(),avgs=SECTIONS.map(sec=>avg(s[sec.id])),all=Object.values(s).flat(),dist=[0,0,0,0];
+  all.forEach(v=>{if(v>0)dist[v-1]++;});
+  // Score cards
+  const g=avg(all);
+  let h='';
+  avgs.forEach((v,i)=>{const p=Math.round((v/4)*100);h+='<div class="sc"><div class="scn">'+(v?v.toFixed(1):'—')+'</div><div class="scl">'+SSHORT[i]+'</div><div style="font-size:10px;margin-top:2px;color:'+lvlC(v)+'">'+lvlL(v)+'</div><div class="sbar"><div class="sbf" style="width:'+p+'%;background:'+lvlC(v)+'"></div></div></div>';});
+  h+='<div class="sc global"><div class="scn">'+(g?g.toFixed(1):'—')+'</div><div class="scl">Score global</div><div style="font-size:10px;margin-top:2px;color:var(--accent)">'+lvlL(g)+'</div><div class="sbar"><div class="sbf" style="width:'+Math.round((g/4)*100)+'%;background:var(--accent)"></div></div></div>';
+  document.getElementById('my-scores').innerHTML=h;
+  if(mycharts.r)mycharts.r.destroy();
+  mycharts.r=new Chart(document.getElementById('myRadar'),{type:'radar',data:{labels:SSHORT,datasets:[{data:avgs,backgroundColor:'rgba(45,90,142,0.12)',borderColor:'#2d5a8e',pointBackgroundColor:'#2d5a8e',pointRadius:4,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{min:0,max:4,ticks:{stepSize:1,font:{size:9},backdropColor:'transparent',color:'#9c968f'},pointLabels:{font:{size:11},color:'#1a1815'},grid:{color:'rgba(0,0,0,0.08)'},angleLines:{color:'rgba(0,0,0,0.1)'}}}}});
+  if(mycharts.d)mycharts.d.destroy();
+  mycharts.d=new Chart(document.getElementById('myDist'),{type:'bar',data:{labels:LVL,datasets:[{data:dist,backgroundColor:LCOLORS,borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{size:10},color:'#9c968f'},grid:{color:'rgba(0,0,0,0.06)'}},x:{ticks:{font:{size:10},color:'#6b6560'},grid:{display:false}}}}});
+}
+
+async function submitForm(){
+  const cfg=getCfg();
+  if(!cfg.url){showMsg('send-msg','ae','URL du script non configurée. Cliquez sur "⚙ Espace directeur" pour la configurer.');return;}
+  const nom=document.getElementById('i-nom').value.trim();
+  const prenom=document.getElementById('i-prenom').value.trim();
+  if(!nom||!prenom){showMsg('send-msg','aw','Merci de renseigner votre nom et prénom.');return;}
+  const s=getScores();
+  const allScores=SECTIONS.flatMap(sec=>s[sec.id]);
+  const notes={};NOTES.forEach(n=>{const el=document.getElementById(n.id);if(el)notes[n.id]=el.value;});
+  const payload={nom,prenom,scores:allScores,notes,date:new Date().toISOString()};
+  document.getElementById('btn-send').disabled=true;
+  ['send-msg','send-msg2','send-msg3'].forEach(id=>showMsg(id,'ai','Envoi en cours…'));
+  try{
+    await fetch(cfg.url,{method:'POST',body:JSON.stringify(payload)});
+    ['send-msg','send-msg2','send-msg3'].forEach(id=>showMsg(id,'as','✓ Autoévaluation envoyée avec succès ! Votre responsable a bien reçu vos réponses.',0));
+    localStorage.removeItem('aed_form');
+  }catch(err){
+    ['send-msg','send-msg2','send-msg3'].forEach(id=>showMsg(id,'ae','Erreur d\'envoi. Vérifiez l\'URL du script ou contactez votre responsable.'));
+  }
+  document.getElementById('btn-send').disabled=false;
+}
+
+function showMsg(id,cls,txt,duration){
+  const el=document.getElementById(id);if(!el)return;
+  el.innerHTML='<div class="alert '+cls+'">'+txt+'</div>';
+  if(duration)setTimeout(()=>el.innerHTML='',duration);
+}
+
+// ADMIN
+function openAdmin(){
+  document.getElementById('apwd').value='';
+  document.getElementById('pwd-err').style.display='none';
+  document.getElementById('modal-login').classList.add('open');
+  setTimeout(()=>document.getElementById('apwd').focus(),100);
+}
+function checkPwd(){
+  const cfg=getCfg();
+  if(document.getElementById('apwd').value===cfg.pwd){
+    closeModal('modal-login');
+    openAdminPanel();
+  } else {
+    document.getElementById('pwd-err').style.display='block';
+  }
+}
+function openAdminPanel(){
+  const cfg=getCfg();
+  const hasUrl=!!cfg.url;
+  document.getElementById('admin-setup').style.display=hasUrl?'none':'block';
+  document.getElementById('admin-global').style.display=hasUrl?'block':'none';
+  document.getElementById('admin-url2').value=cfg.url||'';
+  document.getElementById('modal-admin').classList.add('open');
+  if(hasUrl)loadAdminData();
+}
+
+async function loadAdminData(){
+  const cfg=getCfg();
+  if(!cfg.url){document.getElementById('admin-list').innerHTML='<div class="alert aw">Configurez d\'abord l\'URL du script.</div>';return;}
+  document.getElementById('admin-list').innerHTML='<div class="alert ai">Chargement des données…</div>';
+  try{
+    const res=await fetch(cfg.url+'?t='+Date.now());
+    const data=await res.json();
+    const rows=data.rows||[];
+    if(!rows.length){document.getElementById('admin-list').innerHTML='<div class="alert ai">Aucune réponse pour le moment.</div>';document.getElementById('admin-global').style.display='none';return;}
+    renderAdminStats(rows);
+    renderAdminList(rows);
+    document.getElementById('admin-global').style.display='block';
+  }catch(err){
+    document.getElementById('admin-list').innerHTML='<div class="alert ae">Impossible de charger les données. Vérifiez l\'URL du script.</div>';
+  }
+}
+
+function renderAdminStats(rows){
+  const allCriteria=SECTIONS.flatMap(s=>s.criteria);
+  const critAvgs=allCriteria.map((_,ci)=>{
+    const vals=rows.map(r=>{
+      const keys=Object.keys(r).filter(k=>k!=='Date'&&k!=='Nom'&&k!=='Prénom'&&!['Points forts','Points à améliorer','Événements marquants','Formations souhaitées','Perspectives d\'évolution'].includes(k));
+      return parseInt(r[keys[ci]])||0;
+    }).filter(v=>v>0);
+    return vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;
+  });
+  let offset=0;
+  const secAvgs=SECTIONS.map(sec=>{const a=avg(critAvgs.slice(offset,offset+sec.criteria.length));offset+=sec.criteria.length;return a;});
+  const allVals=rows.flatMap(r=>{const keys=Object.keys(r).filter(k=>k!=='Date'&&k!=='Nom'&&k!=='Prénom'&&!['Points forts','Points à améliorer','Événements marquants','Formations souhaitées','Perspectives d\'évolution'].includes(k));return keys.map(k=>parseInt(r[k])||0).filter(v=>v>0);});
+  const g=avg(allVals);
+  const dist=[0,0,0,0];allVals.forEach(v=>{if(v>0&&v<=4)dist[v-1]++;});
+  let h='';
+  secAvgs.forEach((v,i)=>{const p=Math.round((v/4)*100);h+='<div class="sc"><div class="scn">'+(v?v.toFixed(1):'—')+'</div><div class="scl">'+SSHORT[i]+'</div><div style="font-size:10px;margin-top:2px;color:'+lvlC(v)+'">'+lvlL(v)+'</div><div class="sbar"><div class="sbf" style="width:'+p+'%;background:'+lvlC(v)+'"></div></div></div>';});
+  h+='<div class="sc global"><div class="scn">'+(g?g.toFixed(1):'—')+'</div><div class="scl">Moy. globale ('+rows.length+' AED)</div><div style="font-size:10px;margin-top:2px;color:var(--accent)">'+lvlL(g)+'</div><div class="sbar"><div class="sbf" style="width:'+Math.round((g/4)*100)+'%;background:var(--accent)"></div></div></div>';
+  document.getElementById('admin-scores').innerHTML=h;
+  if(admincharts.r)admincharts.r.destroy();
+  admincharts.r=new Chart(document.getElementById('adminRadar'),{type:'radar',data:{labels:SSHORT,datasets:[{data:secAvgs,backgroundColor:'rgba(45,90,142,0.12)',borderColor:'#2d5a8e',pointBackgroundColor:'#2d5a8e',pointRadius:4,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{min:0,max:4,ticks:{stepSize:1,font:{size:9},backdropColor:'transparent',color:'#9c968f'},pointLabels:{font:{size:11},color:'#1a1815'},grid:{color:'rgba(0,0,0,0.08)'},angleLines:{color:'rgba(0,0,0,0.1)'}}}}});
+  if(admincharts.d)admincharts.d.destroy();
+  admincharts.d=new Chart(document.getElementById('adminDist'),{type:'bar',data:{labels:LVL,datasets:[{data:dist,backgroundColor:LCOLORS,borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{size:10},color:'#9c968f'},grid:{color:'rgba(0,0,0,0.06)'}},x:{ticks:{font:{size:10},color:'#6b6560'},grid:{display:false}}}}});
+}
+
+function renderAdminList(rows){
+  const noteKeys=['Points forts','Points à améliorer','Événements marquants','Formations souhaitées','Perspectives d\'évolution'];
+  const critKeys=Object.keys(rows[0]).filter(k=>k!=='Date'&&k!=='Nom'&&k!=='Prénom'&&!noteKeys.includes(k));
+  let h='<div class="aed-list">';
+  rows.slice().reverse().forEach((r,ri)=>{
+    const vals=critKeys.map(k=>parseInt(r[k])||0);
+    const g=avg(vals.filter(v=>v>0));
+    const pc=g?Math.round(g):'0';
+    h+='<div class="aed-card" onclick="toggleDetail(\'det'+ri+'\')">';
+    h+='<div style="display:flex;justify-content:space-between;align-items:center;">';
+    h+='<div><div class="aed-name">'+(r['Prénom']||'')+' '+(r['Nom']||'')+'</div><div class="aed-date">'+(r['Date']||'')+'</div></div>';
+    h+='<span class="pill p'+pc+'">'+lvlL(g?Math.round(g):0)+'</span>';
+    h+='</div>';
+    // Scores par axe
+    let off=0;
+    h+='<div class="aed-scores">';
+    SECTIONS.forEach(sec=>{const sv=avg(vals.slice(off,off+sec.criteria.length).filter(v=>v>0));off+=sec.criteria.length;const spc=sv?Math.round(sv):'0';h+='<span class="pill p'+spc+'">'+sec.num+'. '+SSHORT[sec.num-1]+' : '+(sv?sv.toFixed(1):'—')+'</span>';});
+    h+='</div>';
+    // Détail expandable
+    h+='<div id="det'+ri+'" style="display:none;margin-top:.875rem;border-top:1px solid var(--border);padding-top:.875rem;">';
+    h+='<table style="width:100%;font-size:12px;border-collapse:collapse;">';
+    critKeys.forEach((k,ki)=>{const v=parseInt(r[k])||0;h+='<tr style="border-bottom:1px solid var(--border);"><td style="padding:5px 0;color:var(--text2);">'+k+'</td><td style="text-align:right;padding:5px 0;"><span class="pill p'+v+'">'+lvlL(v)+'</span></td></tr>';});
+    h+='</table>';
+    noteKeys.forEach(k=>{if(r[k]){h+='<div style="margin-top:.75rem;"><div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;">'+k+'</div><div style="font-size:12.5px;color:var(--text);line-height:1.5;white-space:pre-wrap;">'+r[k]+'</div></div>';}});
+    h+='</div>';
+    h+='</div>';
+  });
+  h+='</div>';
+  document.getElementById('admin-list').innerHTML=h;
+}
+
+function toggleDetail(id){const el=document.getElementById(id);if(el)el.style.display=el.style.display==='none'?'block':'none';}
+
+function saveUrlFromAdmin(){
+  const url=document.getElementById('admin-url-input')?.value.trim()||'';
+  if(!url)return;
+  const cfg=getCfg();cfg.url=url;saveCfg(cfg);
+  document.getElementById('admin-setup').style.display='none';
+  document.getElementById('admin-global').style.display='block';
+  document.getElementById('setup-needed').style.display='none';
+  loadAdminData();
+}
+function saveAdminParams(){
+  const cfg=getCfg();
+  const np=document.getElementById('admin-newpwd').value;
+  const np2=document.getElementById('admin-newpwd2').value;
+  const url=document.getElementById('admin-url2').value.trim();
+  const msg=document.getElementById('params-msg');
+  if(np&&np!==np2){msg.style.display='block';msg.style.color='var(--lv1)';msg.textContent='Les mots de passe ne correspondent pas.';return;}
+  if(np)cfg.pwd=np;
+  if(url)cfg.url=url;
+  saveCfg(cfg);
+  document.getElementById('setup-needed').style.display='none';
+  msg.style.display='block';msg.style.color='var(--lv3)';msg.textContent='Paramètres enregistrés.';
+  setTimeout(()=>msg.style.display='none',2000);
+}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-ov').forEach(el=>{el.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});});
+
+function switchTab(name){
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('pane-'+name).classList.add('active');
+  document.querySelectorAll('.tab')[{eval:0,bilan:1,notes:2}[name]].classList.add('active');
+  if(name==='bilan')renderMyCharts();
+}
+
+buildForm();
+</script>
+</body>
+</html>
